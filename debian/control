@@ -1,0 +1,36 @@
+Source: budgie-applications-menu
+Section: x11
+Priority: optional
+Maintainer: David Mohammed <fossfreedom@ubuntu.com>
+Homepage: https://github.com/ubuntubudgie/applications-menu
+Build-Depends:
+ debhelper (>= 12),
+ debhelper-compat (= 12),
+ libgranite-dev,
+ libgdk-pixbuf2.0-dev,
+ libgee-0.8-dev,
+ libglib2.0-dev (>= 2.57),
+ libgnome-desktop-3-dev,
+ libgnome-menu-3-dev,
+ libzeitgeist-2.0-dev,
+ libjson-glib-dev,
+ libsoup2.4-dev,
+ libgtk-3-dev,
+ libpeas-dev,
+ libbudgie-plugin0,
+ meson (>= 0.40.1),
+ valac,
+ cmake
+Standards-Version: 4.4.1
+Vcs-Browser: https://github.com/UbuntuBudgie/applications-menu/tree/debian
+Vcs-Git: https://github.com/UbuntuBudgie/applications-menu -b debian
+
+Package: budgie-applications-menu
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Applications Menu for Budgie-Desktop
+ Budgie-Desktop is a GTK+ based desktop environment which focuses on
+ simplicity and elegance.  It provides a traditional desktop metaphor
+ based interface utilising customisable panel based menu driven system.
+ Budgie-Desktop is written from scratch utilising many GNOME based
+ sub-systems such as GNOME-Session and Mutter.

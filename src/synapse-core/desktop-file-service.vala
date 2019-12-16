@@ -87,6 +87,7 @@ namespace Synapse {
             foreach (unowned string env in environments) {
                 string env_up = env.up ();
                 switch (env_up) {
+                    case "BUDGIE":
                     case "GNOME":
                     case "X-CINNAMON":
                         result |= EnvironmentType.GNOME;
@@ -114,7 +115,8 @@ namespace Synapse {
                         break;
                     case "XFCE": result |= EnvironmentType.XFCE; break;
                     case "OLD": result |= EnvironmentType.OLD; break;
-                    default: warning ("%s is not understood", env); break;
+                    //default: warning ("%s is not understood", env); break;
+                    default: break;
                 }
             }
             return result;
@@ -291,7 +293,7 @@ namespace Synapse {
             } else if (session.has_prefix ("kde")) {
                 session_type = DesktopFileInfo.EnvironmentType.KDE;
                 session_type_str = "KDE";
-            } else if (session.has_prefix ("gnome")) {
+            } else if (session.has_prefix ("gnome") || session.has_prefix ("budgie")) {
                 session_type = DesktopFileInfo.EnvironmentType.GNOME;
                 session_type_str = "GNOME";
             } else if (session.has_prefix ("lx")) {
@@ -315,9 +317,9 @@ namespace Synapse {
             } else if (session.has_prefix ("pantheon")) {
                 session_type = DesktopFileInfo.EnvironmentType.PANTHEON;
                 session_type_str = "Pantheon";
-            } else {
+            } /*else {
                 warning ("Desktop session type is not recognized, assuming GNOME.");
-            }
+            }*/
         }
 
         private bool get_list_has_desktop_id (string desktop_id) {

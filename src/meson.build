@@ -6,7 +6,7 @@ if get_option('with-zeitgeist')
 endif
 
 sources = [
-    'Indicator.vala',
+    'AppMenu.vala',
     'SlingshotView.vala',
     'Pixels.vala',
 
@@ -15,7 +15,6 @@ sources = [
     'Backend/App.vala',
     'Backend/RelevancyService.vala',
     'Backend/SynapseSearch.vala',
-    'Backend/AppCenter.vala',
 
     'Views/CategoryView.vala',
     'Views/GridView.vala',
@@ -58,10 +57,7 @@ sources = [
     'synapse-plugins/calculator-plugin.vala',
     'synapse-plugins/command-plugin.vala',
     'synapse-plugins/desktop-file-plugin.vala',
-    'synapse-plugins/switchboard-plugin.vala',
-    'synapse-plugins/system-managment.vala',
     'synapse-plugins/link-plugin.vala',
-    'synapse-plugins/appcenter-plugin.vala',
     asresources
 ]
 
@@ -73,18 +69,17 @@ dependencies = [
     granite_dep,
     gee_dep,
     gtk_dep,
-    switchboard_dep,
     json_glib_dep,
     zeitgeist_dep,
     libgnome_menu_dep,
     libsoup_dep,
     appstream_dep,
     plank_dep,
-    unity_dep,
-    wingpanel_dep,
+    budgie_dep,
+    peas_dep,
 ]
 
-wingpanel_indicatorsdir = wingpanel_dep.get_pkgconfig_variable('indicatorsdir', define_variable: ['libdir', libdir])
+wingpanel_indicatorsdir = join_paths(libdir, 'budgie-desktop', 'plugins', 'application-menu')
 
 shared_module(
     meson.project_name(),
@@ -94,3 +89,5 @@ shared_module(
     install: true,
     install_dir: wingpanel_indicatorsdir
 )
+
+install_data('AppMenu.plugin', install_dir: wingpanel_indicatorsdir)

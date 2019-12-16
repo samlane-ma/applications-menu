@@ -38,9 +38,11 @@ appstream_dep = dependency('appstream')
 gio_unix_dep = dependency('gio-unix-2.0')
 json_glib_dep = dependency('json-glib-1.0')
 zeitgeist_dep = dependency('zeitgeist-2.0')
-switchboard_dep = dependency('switchboard-2.0')
+#switchboard_dep = dependency('switchboard-2.0')
 libgnome_menu_dep = dependency('libgnome-menu-3.0')
-wingpanel_dep = dependency('wingpanel-2.0', version: '>=2.1.0')
+#wingpanel_dep = dependency('wingpanel-2.0', version: '>=2.1.0')
+budgie_dep = dependency('budgie-1.0')
+peas_dep = dependency('libpeas-gtk-1.0')
 
 unity_dep = []
 
@@ -50,7 +52,7 @@ if get_option('with-unity')
 endif
 
 plank_dep = dependency('plank', required: false)
-if plank_dep.version().version_compare('>=0.10.9')
+if plank_dep.version().version_compare('>=9.10.9')
     add_project_arguments('--define=HAS_PLANK', language: 'vala')
 endif
 

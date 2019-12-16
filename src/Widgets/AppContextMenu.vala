@@ -87,31 +87,31 @@ public class Slingshot.AppContextMenu : Gtk.Menu {
         }
 #endif
 
-        var appcenter = Backend.AppCenter.get_default ();
+        /*var appcenter = Backend.AppCenter.get_default ();
         appcenter.notify["dbus"].connect (() => on_appcenter_dbus_changed.begin (appcenter));
         on_appcenter_dbus_changed.begin (appcenter);
-
+        */
         show_all ();
     }
 
     private void uninstall_menuitem_activate () {
-        var appcenter = Backend.AppCenter.get_default ();
+        /*var appcenter = Backend.AppCenter.get_default ();
         if (appcenter.dbus == null || appstream_comp_id == "") {
             return;
-        }
+        }*/
 
         app_launched ();
 
-        appcenter.dbus.uninstall.begin (appstream_comp_id, (obj, res) => {
+        /*appcenter.dbus.uninstall.begin (appstream_comp_id, (obj, res) => {
             try {
                 appcenter.dbus.uninstall.end (res);
             } catch (GLib.Error e) {
                 warning (e.message);
             }
-        });
+        });*/
     }
 
-    private void open_in_appcenter () {
+    /*private void open_in_appcenter () {
         AppInfo.launch_default_for_uri_async.begin ("appstream://" + appstream_comp_id, null, null, (obj, res) => {
             try {
                 AppInfo.launch_default_for_uri_async.end (res);
@@ -129,9 +129,9 @@ public class Slingshot.AppContextMenu : Gtk.Menu {
                 app_launched ();
             }
         });
-    }
+    }*/
 
-    private async void on_appcenter_dbus_changed (Backend.AppCenter appcenter) {
+    /*private async void on_appcenter_dbus_changed (Backend.AppCenter appcenter) {
         if (appcenter.dbus != null) {
             try {
                 appstream_comp_id = yield appcenter.dbus.get_component_from_desktop_id (desktop_id);
@@ -160,7 +160,7 @@ public class Slingshot.AppContextMenu : Gtk.Menu {
         } else {
             appstream_comp_id = "";
         }
-    }
+    }*/
 
 #if HAS_PLANK
     private void plank_menuitem_activate () {
