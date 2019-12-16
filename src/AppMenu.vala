@@ -12,7 +12,7 @@ using Json;
 * under the terms of the GNU General Public License as published by the Free
 * Software Foundation, either version 3 of the License, or any later version.
 * This program is distributed in the hope that it will be useful, but WITHOUT
-* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or 
+* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
 * more details. You should have received a copy of the GNU General Public
 * License along with this program.  If not, see
@@ -20,14 +20,14 @@ using Json;
 */
 
 namespace SupportingFunctions {
-    /* 
+    /*
     * Here we keep the (possibly) shared stuff, or general functions, to
     * keep the main code clean and readable
     */
 }
 
 
-namespace AppMenuApplet { 
+namespace AppMenuApplet {
 
     public class AppMenuSettings : Gtk.Grid {
         /* Budgie Settings -section */
@@ -35,7 +35,7 @@ namespace AppMenuApplet {
 
         public AppMenuSettings(GLib.Settings? settings) {
             /*
-            * Gtk stuff, widgets etc. here 
+            * Gtk stuff, widgets etc. here
             */
         }
     }
@@ -53,12 +53,12 @@ namespace AppMenuApplet {
         /* process stuff */
         /* GUI stuff */
         private Gtk.Grid? indicator_grid = null;
-        
+
         /* misc stuff */
 
         public AppMenuPopover(Gtk.EventBox indicatorBox, Slingshot.SlingshotView view) {
             GLib.Object(relative_to: indicatorBox);
-            
+
             /* gsettings stuff */
 
             /* grid */
@@ -70,7 +70,7 @@ namespace AppMenuApplet {
             indicator_grid = new Gtk.Grid ();
             //indicator_grid.attach (indicator_icon, 0, 0, 1, 1);
             //indicator_grid.attach (indicator_label, 1, 0, 1, 1);
-            
+
             //this.maingrid = new Gtk.Grid();
             //this.add(this.maingrid);
             indicator_grid.attach (view, 0, 1, 1, 1);
@@ -92,7 +92,7 @@ namespace AppMenuApplet {
         private Slingshot.SlingshotView? view = null;
 
         private static GLib.Settings? keybinding_settings;
-        private weak Gtk.IconTheme default_theme = null; 
+        private weak Gtk.IconTheme default_theme = null;
 
         protected GLib.Settings settings;
 
@@ -182,8 +182,14 @@ namespace AppMenuApplet {
             show_all();
 
             on_settings_changed("menu-icon");
+
+            view.close_indicator.connect (on_close_indicator);
+
         }
 
+        private void on_close_indicator () {
+            popover.hide();
+        }
 
         protected void on_settings_changed(string key) {
             bool should_show = true;
