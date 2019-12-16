@@ -18,6 +18,8 @@ Build-Depends:
  libgtk-3-dev,
  libpeas-dev,
  libbudgie-plugin0,
+ budgie-core-dev,
+ libappstream-dev,
  meson (>= 0.40.1),
  valac,
  cmake
@@ -26,7 +28,7 @@ Vcs-Browser: https://github.com/UbuntuBudgie/applications-menu/tree/debian
 Vcs-Git: https://github.com/UbuntuBudgie/applications-menu -b debian
 
 Package: budgie-applications-menu
-Architecture: any
+Architecture: all
 Depends: ${misc:Depends}, ${shlibs:Depends}
 Description: Applications Menu for Budgie-Desktop
  Budgie-Desktop is a GTK+ based desktop environment which focuses on
