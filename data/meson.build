@@ -12,7 +12,7 @@ install_data(
     install_dir: join_paths(datadir, 'glib-2.0', 'schemas')
 )
 
-install_data(
-    'pantheon-applications.menu',
-    install_dir: join_paths(get_option('sysconfdir'), 'xdg', 'menus')
-)
+#install_data(
+#    'pantheon-applications.menu',
+#    install_dir: join_paths(get_option('sysconfdir'), 'xdg', 'menus')
+#)

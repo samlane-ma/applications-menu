@@ -36,7 +36,7 @@ public class Slingshot.Backend.AppSystem : Object {
 #endif
 
         apps_menu = new GMenu.Tree (
-            "pantheon-applications.menu",
+            "gnome-applications.menu",
             GMenu.TreeFlags.INCLUDE_EXCLUDED | GMenu.TreeFlags.SORT_DISPLAY_NAME
         );
         apps_menu.changed.connect (update_app_system);

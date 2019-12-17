@@ -29,7 +29,7 @@ Vcs-Git: https://github.com/UbuntuBudgie/applications-menu -b debian
 
 Package: budgie-applications-menu
 Architecture: any
-Depends: ${misc:Depends}, ${shlibs:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}, gnome-menus
 Description: Applications Menu for Budgie-Desktop
  Budgie-Desktop is a GTK+ based desktop environment which focuses on
  simplicity and elegance.  It provides a traditional desktop metaphor
