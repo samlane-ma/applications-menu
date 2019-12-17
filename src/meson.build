@@ -5,8 +5,21 @@ if get_option('with-zeitgeist')
     ]
 endif
 
+gresource = join_paths(meson.current_source_dir(), 'plugin.gresource.xml')
+
+# Compile the assets into the binary
+applet_appmenu_resources = gnome.compile_resources(
+    'appmenuapplet-applet-resources',
+    gresource,
+    source_dir: meson.current_source_dir(),
+    c_name: 'budgie_appmenuapplet',
+)
+
+
 sources = [
     'AppMenu.vala',
+    'IconChooser.vala',
+    applet_appmenu_resources,
     'SlingshotView.vala',
     'Pixels.vala',
 
@@ -85,6 +98,11 @@ shared_module(
     meson.project_name(),
     sources,
     dependencies: dependencies,
+    vala_args: [
+        # Make gresource work
+        '--target-glib=2.38',
+        '--gresources=' + gresource,
+    ],
     c_args : '-DGMENU_I_KNOW_THIS_IS_UNSTABLE',
     install: true,
     install_dir: wingpanel_indicatorsdir

@@ -29,14 +29,40 @@ namespace SupportingFunctions {
 
 namespace AppMenuApplet {
 
-    public class AppMenuSettings : Gtk.Grid {
-        /* Budgie Settings -section */
-        GLib.Settings? settings = null;
+    [GtkTemplate (ui = "/org/ubuntubudgie/appmenu/settings.ui")]
+    public class AppMenuSettings : Gtk.Grid
+    {
+        //[GtkChild]
+        //private Gtk.Entry? entry_label;
 
-        public AppMenuSettings(GLib.Settings? settings) {
-            /*
-            * Gtk stuff, widgets etc. here
-            */
+        [GtkChild]
+        private Gtk.Entry? entry_icon_pick;
+
+        [GtkChild]
+        private Gtk.Button? button_icon_pick;
+
+        private GLib.Settings? settings;
+
+        public AppMenuSettings(GLib.Settings? settings)
+        {
+            this.settings = settings;
+            //settings.bind("menu-label", entry_label, "text", SettingsBindFlags.DEFAULT);
+            settings.bind("menu-icon", entry_icon_pick, "text", SettingsBindFlags.DEFAULT);
+
+            this.button_icon_pick.clicked.connect(on_pick_click);
+        }
+
+        /**
+        * Handle the icon picker
+        */
+        void on_pick_click()
+        {
+            IconChooser chooser = new IconChooser(this.get_toplevel() as Gtk.Window);
+            string? response = chooser.run();
+            chooser.destroy();
+            if (response != null) {
+                this.entry_icon_pick.set_text(response);
+            }
         }
     }
 
@@ -100,17 +126,17 @@ namespace AppMenuApplet {
         int pixel_size = 32;
 
         /* specifically to the settings section */
-        /*public override bool supports_settings()
+        public override bool supports_settings()
         {
             return true;
         }
         public override Gtk.Widget? get_settings_ui()
         {
             return new AppMenuSettings(this.get_applet_settings(uuid));
-        }*/
+        }
 
         public Applet(string uuid) {
-            initialiseLocaleLanguageSupport();
+            //initialiseLocaleLanguageSupport();
             if (SettingsSchemaSource.get_default ().lookup (KEYBINDING_SCHEMA, true) != null) {
                 keybinding_settings = new GLib.Settings (KEYBINDING_SCHEMA);
             }
@@ -118,7 +144,7 @@ namespace AppMenuApplet {
             GLib.Object(uuid: uuid);
 
             settings_schema = "com.solus-project.budgie-menu";
-            settings_prefix = "/com/solus-project/budgie-panel/instance/budgie-menu";
+            settings_prefix = "/org/solus-project/budgie-panel/instance/budgie-menu";
 
             settings = this.get_applet_settings(uuid);
 
@@ -184,6 +210,14 @@ namespace AppMenuApplet {
             on_settings_changed("menu-icon");
 
             view.close_indicator.connect (on_close_indicator);
+
+            /* Potentially reload icon on pixel size jumps */
+            panel_size_changed.connect((p,i,s)=> {
+                if (this.pixel_size != i) {
+                    this.pixel_size = (int)i;
+                    this.on_settings_changed("menu-icon");
+                }
+            });
 
         }
 
