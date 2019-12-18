@@ -108,7 +108,7 @@ namespace AppMenuApplet {
     public class Applet : Budgie.Applet {
 
         private Gtk.EventBox indicatorBox;
-        private AppMenuPopover popover = null;
+        private Budgie.Popover popover = null;
         private unowned Budgie.PopoverManager? manager = null;
         public string uuid { public set; public get; }
 
@@ -121,6 +121,8 @@ namespace AppMenuApplet {
         private weak Gtk.IconTheme default_theme = null;
 
         protected GLib.Settings settings;
+
+        private Gtk.Grid? indicator_grid = null;
 
         Gtk.Image img;
         int pixel_size = 32;
@@ -178,9 +180,12 @@ namespace AppMenuApplet {
 
             add(indicatorBox);
             /* Popover */
-            popover = new AppMenuPopover(indicatorBox, view);
-
-            //update_tooltip ();
+            //popover = new AppMenuPopover(indicatorBox, view);
+            popover = new Budgie.Popover(indicatorBox);
+            indicator_grid = new Gtk.Grid ();
+            indicator_grid.attach (view, 0, 1, 1, 1);
+            popover.add(indicator_grid);
+            update_tooltip ();
             if (keybinding_settings != null) {
                 keybinding_settings.changed.connect ((key) => {
                     if (key == "panel-main-menu") {
@@ -264,7 +269,7 @@ namespace AppMenuApplet {
             }
         }
 
-        /*private void update_tooltip () {
+        private void update_tooltip () {
             string[] accels = {};
 
             if (keybinding_settings != null && indicator_grid != null) {
@@ -275,7 +280,7 @@ namespace AppMenuApplet {
             }
 
             indicator_grid.tooltip_markup = Granite.markup_accel_tooltip (accels, _("Open and search apps"));
-        }*/
+        }
 
         public override void update_popovers(Budgie.PopoverManager? manager)
         {
