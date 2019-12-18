@@ -5,5 +5,15 @@
             <summary>Show the category view by default</summary>
             <description>Save the current view of the launcher.</description>
         </key>
+        <key name="rows" type="i">
+            <default>3</default>
+            <range min="2" max="10"/>
+            <description>Number of rows for the grid view to display.</description>
+        </key>
+        <key name="columns" type="i">
+            <default>5</default>
+            <range min="2" max="10"/>
+            <description>Number of columns for the grid view to display.</description>
+        </key>
 	</schema>
 </schemalist>

@@ -163,6 +163,14 @@ public class Slingshot.SlingshotView : Gtk.Grid {
             populate_grid_view ();
             category_view.setup_sidebar ();
         });
+
+        settings.changed["rows"].connect_after(() => {
+            populate_grid_view();
+        });
+
+        settings.changed["columns"].connect_after(() => {
+            populate_grid_view();
+        });
     }
 
 #if HAS_PLANK
@@ -528,7 +536,9 @@ public class Slingshot.SlingshotView : Gtk.Grid {
     }
 
     public void populate_grid_view () {
-        grid_view.clear ();
+        int new_rows = settings.get_int("rows");
+        int new_columns = settings.get_int("columns");
+        grid_view.clear (new_rows, new_columns);
         foreach (Backend.App app in app_system.get_apps_by_name ()) {
             var app_button = new Widgets.AppButton (app);
             app_button.app_launched.connect (() => close_indicator ());

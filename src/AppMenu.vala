@@ -41,13 +41,27 @@ namespace AppMenuApplet {
         [GtkChild]
         private Gtk.Button? button_icon_pick;
 
+        [GtkChild]
+        private Gtk.SpinButton spin_rows;
+
+        [GtkChild]
+        private Gtk.SpinButton spin_columns;
+
         private GLib.Settings? settings;
+
+        private static GLib.Settings appmenu_settings { get; private set; default = null; }
+
+        static construct {
+            appmenu_settings = new GLib.Settings ("io.elementary.desktop.wingpanel.applications-menu");
+        }
 
         public AppMenuSettings(GLib.Settings? settings)
         {
             this.settings = settings;
             //settings.bind("menu-label", entry_label, "text", SettingsBindFlags.DEFAULT);
             settings.bind("menu-icon", entry_icon_pick, "text", SettingsBindFlags.DEFAULT);
+            appmenu_settings.bind("rows", spin_rows, "value", SettingsBindFlags.DEFAULT);
+            appmenu_settings.bind("columns", spin_columns, "value", SettingsBindFlags.DEFAULT);
 
             this.button_icon_pick.clicked.connect(on_pick_click);
         }
@@ -72,38 +86,6 @@ namespace AppMenuApplet {
             return new Applet(uuid);
         }
     }
-
-
-    public class AppMenuPopover : Budgie.Popover {
-        private Gtk.EventBox indicatorBox;
-        /* process stuff */
-        /* GUI stuff */
-        private Gtk.Grid? indicator_grid = null;
-
-        /* misc stuff */
-
-        public AppMenuPopover(Gtk.EventBox indicatorBox, Slingshot.SlingshotView view) {
-            GLib.Object(relative_to: indicatorBox);
-
-            /* gsettings stuff */
-
-            /* grid */
-            //var indicator_label = new Gtk.Label (_("Applications"));
-            //indicator_label.vexpand = true;
-
-            //var indicator_icon = new Gtk.Image.from_icon_name ("system-search-symbolic", Gtk.IconSize.MENU);
-
-            indicator_grid = new Gtk.Grid ();
-            //indicator_grid.attach (indicator_icon, 0, 0, 1, 1);
-            //indicator_grid.attach (indicator_label, 1, 0, 1, 1);
-
-            //this.maingrid = new Gtk.Grid();
-            //this.add(this.maingrid);
-            indicator_grid.attach (view, 0, 1, 1, 1);
-            this.add(indicator_grid);
-        }
-    }
-
 
     public class Applet : Budgie.Applet {
 
@@ -180,7 +162,6 @@ namespace AppMenuApplet {
 
             add(indicatorBox);
             /* Popover */
-            //popover = new AppMenuPopover(indicatorBox, view);
             popover = new Budgie.Popover(indicatorBox);
             indicator_grid = new Gtk.Grid ();
             indicator_grid.attach (view, 0, 1, 1, 1);
@@ -189,7 +170,7 @@ namespace AppMenuApplet {
             if (keybinding_settings != null) {
                 keybinding_settings.changed.connect ((key) => {
                     if (key == "panel-main-menu") {
-                        //update_tooltip ();
+                        update_tooltip ();
                     }
                 });
             }

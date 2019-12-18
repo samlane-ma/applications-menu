@@ -100,7 +100,7 @@ public class Slingshot.Widgets.Grid : Gtk.Grid {
         }
     }
 
-    public void clear () {
+    public void clear (int new_rows, int new_columns) {
         foreach (Gtk.Grid grid in grids.values) {
             grid.destroy ();
         }
@@ -109,6 +109,8 @@ public class Slingshot.Widgets.Grid : Gtk.Grid {
         current_row = 0;
         current_col = 0;
         page.number = 1;
+        page.rows = new_rows;
+        page.columns = new_columns;
         create_new_grid ();
         stack.set_visible_child (current_grid);
     }
