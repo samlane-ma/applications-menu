@@ -1,3 +1,16 @@
+budgie-applications-menu (0.1.1-0ubuntu1~eoan) eoan; urgency=medium
+
+  * Add icon setting
+  * revert pager icon
+
+ -- David Mohammed <fossfreedom@ubuntu.com>  Tue, 17 Dec 2019 21:10:07 +0000
+
+budgie-applications-menu (0.1.0-0ubuntu1~focal) focal; urgency=medium
+
+  * Close on launch
+
+ -- David Mohammed <fossfreedom@ubuntu.com>  Mon, 16 Dec 2019 23:08:04 +0000
+
 budgie-applications-menu (0.1-0ubuntu1~focal) focal; urgency=medium
 
   * Initial Release
