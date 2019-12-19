@@ -8,12 +8,16 @@
         <key name="rows" type="i">
             <default>3</default>
             <range min="2" max="10"/>
-            <description>Number of rows for the grid view to display.</description>
+            <summary>Number of rows for the grid view to display.</summary>
         </key>
         <key name="columns" type="i">
             <default>5</default>
             <range min="2" max="10"/>
-            <description>Number of columns for the grid view to display.</description>
+            <summary>Number of columns for the grid view to display.</summary>
+        </key>
+        <key name="enable-powerstrip" type="b">
+            <default>false</default>
+            <summary>Show Power-strip</summary>
         </key>
 	</schema>
 </schemalist>

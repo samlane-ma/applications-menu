@@ -9,6 +9,9 @@
  * (at your option) any later version.
  */
 
+ namespace AppMenu
+{
+
 /**
  * IconChooser is a simple GtkFileChooserDialog wrapper. We tried simple
  * icon selection with IconView + TreeView, and whatever way you do it,
@@ -72,3 +75,5 @@ public class IconChooser : Gtk.FileChooserDialog
     }
 
 } /* End IconChooser */
+
+} /* End namespace */

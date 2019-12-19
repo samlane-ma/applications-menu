@@ -26,6 +26,7 @@ public class Slingshot.SlingshotView : Gtk.Grid {
     public Backend.AppSystem app_system;
     public Gee.HashMap<string, Gee.ArrayList<Backend.App>> apps;
     public Gtk.SearchEntry search_entry;
+    private AppMenu.PowerStrip powerstrip;
     public Gtk.Stack stack;
     public Granite.Widgets.ModeButton view_selector;
 
@@ -81,11 +82,15 @@ public class Slingshot.SlingshotView : Gtk.Grid {
             {"<Ctrl>BackSpace"}, _("Clear all")
         );
 
+        powerstrip = new AppMenu.PowerStrip();
+        powerstrip.set_view(this);
+
         var top = new Gtk.Grid ();
         top.margin_start = 12;
         top.margin_end = 12;
         top.add (view_selector_revealer);
         top.add (search_entry);
+        top.add (powerstrip);
 
         grid_view = new Widgets.Grid ();
 
@@ -170,6 +175,10 @@ public class Slingshot.SlingshotView : Gtk.Grid {
 
         settings.changed["columns"].connect_after(() => {
             populate_grid_view();
+        });
+
+        settings.changed["enable-powerstrip"].connect( () => {
+            powerstrip.set_visible(settings.get_boolean("enable-powerstrip"));
         });
     }
 
@@ -546,6 +555,7 @@ public class Slingshot.SlingshotView : Gtk.Grid {
         }
 
         grid_view.show_all ();
+        powerstrip.set_visible(settings.get_boolean("enable-powerstrip"));
     }
 
     private void normal_move_focus (int delta_column, int delta_row) {
