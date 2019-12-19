@@ -1,3 +1,9 @@
+budgie-applications-menu (0.1.2-0ubuntu1~eoan) eoan; urgency=medium
+
+  * Add grid sizing
+
+ -- David Mohammed <fossfreedom@ubuntu.com>  Wed, 18 Dec 2019 21:44:33 +0000
+
 budgie-applications-menu (0.1.1-0ubuntu1~eoan) eoan; urgency=medium
 
   * Add icon setting
