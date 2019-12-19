@@ -17,6 +17,7 @@ applet_appmenu_resources = gnome.compile_resources(
 
 
 sources = [
+    'powerstrip.vala',
     'AppMenu.vala',
     'IconChooser.vala',
     applet_appmenu_resources,

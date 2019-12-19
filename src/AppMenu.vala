@@ -5,8 +5,11 @@ using Json;
 
 /*
 * AppMenu
-* Author: David Mohammed
-* Copyright © 2017-2019 Ubuntu Budgie Developers
+* Author: David Mohammed, Budgie Desktop Developers, elementary, Inc. (https://elementary.io), Giulio Collura
+* Copyright 2019 Ubuntu Budgie Developers
+*           2015-2019 Budgie Desktop Developers
+*           2019 elementary, Inc. (https://elementary.io)
+*           2011-2012 Giulio Collura
 * Website=https://ubuntubudgie.org
 * This program is free software: you can redistribute it and/or modify it
 * under the terms of the GNU General Public License as published by the Free
@@ -19,21 +22,17 @@ using Json;
 * <https://www.gnu.org/licenses/>.
 */
 
-namespace SupportingFunctions {
-    /*
-    * Here we keep the (possibly) shared stuff, or general functions, to
-    * keep the main code clean and readable
-    */
-}
-
-
 namespace AppMenuApplet {
 
     [GtkTemplate (ui = "/org/ubuntubudgie/appmenu/settings.ui")]
     public class AppMenuSettings : Gtk.Grid
     {
-        //[GtkChild]
-        //private Gtk.Entry? entry_label;
+
+        [GtkChild]
+        private Gtk.Switch? switch_menu_label;
+
+        [GtkChild]
+        private Gtk.Entry? entry_label;
 
         [GtkChild]
         private Gtk.Entry? entry_icon_pick;
@@ -47,8 +46,11 @@ namespace AppMenuApplet {
         [GtkChild]
         private Gtk.SpinButton spin_columns;
 
-        private GLib.Settings? settings;
+        [GtkChild]
+        private Gtk.Switch? switch_powerstrip;
 
+
+        private GLib.Settings? settings;
         private static GLib.Settings appmenu_settings { get; private set; default = null; }
 
         static construct {
@@ -58,10 +60,12 @@ namespace AppMenuApplet {
         public AppMenuSettings(GLib.Settings? settings)
         {
             this.settings = settings;
-            //settings.bind("menu-label", entry_label, "text", SettingsBindFlags.DEFAULT);
+            settings.bind("enable-menu-label", switch_menu_label, "active", SettingsBindFlags.DEFAULT);
+            settings.bind("menu-label", entry_label, "text", SettingsBindFlags.DEFAULT);
             settings.bind("menu-icon", entry_icon_pick, "text", SettingsBindFlags.DEFAULT);
-            appmenu_settings.bind("rows", spin_rows, "value", SettingsBindFlags.DEFAULT);
             appmenu_settings.bind("columns", spin_columns, "value", SettingsBindFlags.DEFAULT);
+            appmenu_settings.bind("rows", spin_rows, "value", SettingsBindFlags.DEFAULT);
+            appmenu_settings.bind("enable-powerstrip", switch_powerstrip, "active", SettingsBindFlags.DEFAULT);
 
             this.button_icon_pick.clicked.connect(on_pick_click);
         }
@@ -71,7 +75,7 @@ namespace AppMenuApplet {
         */
         void on_pick_click()
         {
-            IconChooser chooser = new IconChooser(this.get_toplevel() as Gtk.Window);
+            AppMenu.IconChooser chooser = new AppMenu.IconChooser(this.get_toplevel() as Gtk.Window);
             string? response = chooser.run();
             chooser.destroy();
             if (response != null) {
@@ -89,7 +93,7 @@ namespace AppMenuApplet {
 
     public class Applet : Budgie.Applet {
 
-        private Gtk.EventBox indicatorBox;
+        private Gtk.ToggleButton widget;
         private Budgie.Popover popover = null;
         private unowned Budgie.PopoverManager? manager = null;
         public string uuid { public set; public get; }
@@ -107,6 +111,8 @@ namespace AppMenuApplet {
         private Gtk.Grid? indicator_grid = null;
 
         Gtk.Image img;
+        Gtk.Label label;
+        Budgie.PanelPosition panel_position = Budgie.PanelPosition.BOTTOM;
         int pixel_size = 32;
 
         /* specifically to the settings section */
@@ -152,17 +158,29 @@ namespace AppMenuApplet {
                 }
             }
 
-            /* box */
-            indicatorBox = new Gtk.EventBox();
+            /* Panel Menu Button */
+            widget = new Gtk.ToggleButton();
+            widget.relief = Gtk.ReliefStyle.NONE;
             img = new Gtk.Image.from_icon_name("view-grid-symbolic", Gtk.IconSize.INVALID);
             img.pixel_size = pixel_size;
             img.no_show_all = true;
-            /* set icon */
-            indicatorBox.add(img);
 
-            add(indicatorBox);
+            var layout = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
+            layout.pack_start(img, true, true, 0);
+            label = new Gtk.Label("");
+            label.halign = Gtk.Align.START;
+            layout.pack_start(label, true, true, 3);
+
+            /* set icon */
+            widget.add(layout);
+
+            // Better styling to fit in with the budgie-panel
+            var st = widget.get_style_context();
+            st.add_class("budgie-menu-launcher");
+            st.add_class("panel-button");
+
             /* Popover */
-            popover = new Budgie.Popover(indicatorBox);
+            popover = new Budgie.Popover(widget);
             indicator_grid = new Gtk.Grid ();
             indicator_grid.attach (view, 0, 1, 1, 1);
             popover.add(indicator_grid);
@@ -177,8 +195,8 @@ namespace AppMenuApplet {
 
             supported_actions = Budgie.PanelAction.MENU;
 
-            /* On Press indicatorBox */
-            indicatorBox.button_press_event.connect((e)=> {
+            /* On Press Menu Button */
+            widget.button_press_event.connect((e)=> {
                 if (e.button != 1) {
                     return Gdk.EVENT_PROPAGATE;
                 }
@@ -186,14 +204,17 @@ namespace AppMenuApplet {
                     popover.hide();
                 } else {
                     view.show_slingshot ();
-                    this.manager.show_popover(indicatorBox);
+                    this.manager.show_popover(widget);
                 }
                 return Gdk.EVENT_STOP;
             });
             popover.get_child().show_all();
+            add(widget);
             show_all();
 
+            on_settings_changed("enable-menu-label");
             on_settings_changed("menu-icon");
+            on_settings_changed("menu-label");
 
             view.close_indicator.connect (on_close_indicator);
 
@@ -209,6 +230,15 @@ namespace AppMenuApplet {
 
         private void on_close_indicator () {
             popover.hide();
+        }
+
+        public override void panel_position_changed(Budgie.PanelPosition position)
+        {
+            this.panel_position = position;
+            bool vertical = (position == Budgie.PanelPosition.LEFT || position == Budgie.PanelPosition.RIGHT);
+            int margin = vertical ? 0 : 3;
+            img.set_margin_end(margin);
+            on_settings_changed("enable-menu-label");
         }
 
         protected void on_settings_changed(string key) {
@@ -234,6 +264,15 @@ namespace AppMenuApplet {
                     img.set_pixel_size(this.pixel_size);
                     img.set_visible(should_show);
                     break;
+                case "menu-label":
+                    label.set_label(settings.get_string(key));
+                    break;
+                case "enable-menu-label":
+                    bool visible = (panel_position == Budgie.PanelPosition.TOP ||
+                                    panel_position == Budgie.PanelPosition.BOTTOM) &&
+                                    settings.get_boolean(key);
+                    label.set_visible(visible);
+                    break;
                 default:
                     break;
             }
@@ -245,7 +284,7 @@ namespace AppMenuApplet {
                     popover.hide();
                 } else {
                     view.show_slingshot();
-                    this.manager.show_popover(indicatorBox);
+                    this.manager.show_popover(widget);
                 }
             }
         }
@@ -266,7 +305,7 @@ namespace AppMenuApplet {
         public override void update_popovers(Budgie.PopoverManager? manager)
         {
             this.manager = manager;
-            manager.register_popover(indicatorBox, popover);
+            manager.register_popover(widget, popover);
         }
 
         public void initialiseLocaleLanguageSupport(){
