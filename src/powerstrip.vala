@@ -75,7 +75,7 @@ class PowerStrip : Gtk.Box
             
     construct
     {
-        Gtk.Box? bottom = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 20);
+        Gtk.Box? bottom = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 1);
         //margin_top = 10;
         //get_style_context().add_class("raven-header");
         get_style_context().add_class("powerstrip");
