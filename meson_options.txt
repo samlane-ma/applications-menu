@@ -1,2 +1,2 @@
 option('with-unity', type : 'boolean', value : 'false', description : 'Add Unity launcher support')
-option('with-zeitgeist', type : 'boolean', value : 'false', description : 'Add Zeitgeist support')
+option('with-zeitgeist', type : 'boolean', value : 'true', description : 'Add Zeitgeist support')

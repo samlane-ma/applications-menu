@@ -22,6 +22,11 @@ using Json;
 * <https://www.gnu.org/licenses/>.
 */
 
+#if HAS_PLANK
+[CCode (cname = "PKGDATADIR")]
+private extern const string PKGDATADIR;
+#endif
+
 namespace AppMenuApplet {
 
     [GtkTemplate (ui = "/org/ubuntubudgie/appmenu/settings.ui")]
