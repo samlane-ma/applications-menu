@@ -26,7 +26,6 @@ using Json;
 [CCode (cname = "PKGDATADIR")]
 private extern const string PKGDATADIR;
 #endif
-
 namespace AppMenuApplet {
 
     [GtkTemplate (ui = "/org/ubuntubudgie/appmenu/settings.ui")]

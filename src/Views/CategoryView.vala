@@ -116,7 +116,7 @@ public class Slingshot.Widgets.CategoryView : Gtk.EventBox {
                     Gtk.drag_set_icon_gicon (ctx, drag_item.app_info.get_icon (), 32, 32);
                 }
 
-                view.close_indicator ();
+                //view.close_indicator ();
             }
         });
 

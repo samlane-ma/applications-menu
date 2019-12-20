@@ -52,7 +52,7 @@ public class Slingshot.AppListBox : Gtk.ListBox {
                     Gtk.drag_set_icon_gicon (ctx, drag_item.icon.gicon, 32, 32);
                 }
 
-                close_request ();
+                //close_request ();
             }
         });
 

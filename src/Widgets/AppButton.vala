@@ -149,11 +149,12 @@ public class Slingshot.Widgets.AppButton : Gtk.Button {
         this.drag_begin.connect ((ctx) => {
             this.dragging = true;
             Gtk.drag_set_icon_gicon (ctx, app.icon, 16, 16);
-            app_launched ();
+            //app_launched ();
         });
 
         this.drag_end.connect ( () => {
             this.dragging = false;
+            app_launched ();
         });
 
         this.drag_data_get.connect ( (ctx, sel, info, time) => {
