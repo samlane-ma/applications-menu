@@ -83,7 +83,6 @@ public class Slingshot.SlingshotView : Gtk.Grid {
         );
 
         powerstrip = new AppMenu.PowerStrip();
-        powerstrip.set_view(this);
 
         var top = new Gtk.Grid ();
         top.margin_start = 12;
@@ -179,6 +178,10 @@ public class Slingshot.SlingshotView : Gtk.Grid {
 
         settings.changed["enable-powerstrip"].connect( () => {
             powerstrip.set_visible(settings.get_boolean("enable-powerstrip"));
+        });
+
+        powerstrip.invoke_action.connect(() => {
+            close_indicator ();
         });
     }
 

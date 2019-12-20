@@ -1,9 +1,9 @@
 /*
  * This file is part of budgie-desktop
- * 
+ *
  * Copyright © 2019 Ubuntu Budgie Developers,
  *             2015-2019 Budgie Desktop Developers
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -45,7 +45,7 @@ class PowerStrip : Gtk.Box
     private LogindInterface? logind_interface = null;
     private Gtk.Button? lock_btn = null;
     private Gtk.Button? power_btn = null;
-    private weak Slingshot.SlingshotView view;
+    public signal void invoke_action ();
 
     async void setup_dbus()
     {
@@ -68,11 +68,6 @@ class PowerStrip : Gtk.Box
         }
     }
 
-    public void set_view(Slingshot.SlingshotView view)
-    {
-        this.view = view;
-    }
-            
     construct
     {
         Gtk.Box? bottom = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 1);
@@ -157,7 +152,7 @@ class PowerStrip : Gtk.Box
         }
 
         Idle.add(()=> {
-            view.close_indicator();
+            invoke_action();
             session.Reboot.begin();
             return false;
         });
@@ -169,7 +164,7 @@ class PowerStrip : Gtk.Box
         }
 
         Idle.add(()=> {
-            view.close_indicator();
+            invoke_action();
             session.Shutdown.begin();
             return false;
         });
@@ -182,7 +177,7 @@ class PowerStrip : Gtk.Box
 
         Idle.add(()=> {
             try {
-                view.close_indicator();
+                invoke_action();
                 lock_screen();
                 logind_interface.suspend(false);
             } catch (Error e) {
@@ -195,14 +190,14 @@ class PowerStrip : Gtk.Box
     void lock_screen() {
         Idle.add(()=> {
             try {
-                view.close_indicator();
+                invoke_action();
                 saver.lock();
             } catch (Error e) {
                 warning("Cannot lock screen: %s", e.message);
             }
             return false;
         });
-    }    
+    }
 }
 
 } /* End namespace */
