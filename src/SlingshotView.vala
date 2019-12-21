@@ -61,10 +61,13 @@ public class Slingshot.SlingshotView : Gtk.Grid {
         screen = get_screen ();
 
         var grid_image = new Gtk.Image.from_icon_name ("view-grid-symbolic", Gtk.IconSize.MENU);
+#if GRANITE5
         grid_image.tooltip_markup = Granite.markup_accel_tooltip ({"<Ctrl>1"}, _("View as Grid"));
-
+#endif
         var category_image = new Gtk.Image.from_icon_name ("view-filter-symbolic", Gtk.IconSize.MENU);
+#if GRANITE5
         category_image.tooltip_markup = Granite.markup_accel_tooltip ({"<Ctrl>2"}, _("View by Category"));
+#endif
 
         view_selector = new Granite.Widgets.ModeButton ();
         view_selector.margin_end = 12;
@@ -78,9 +81,11 @@ public class Slingshot.SlingshotView : Gtk.Grid {
         search_entry = new Gtk.SearchEntry ();
         search_entry.placeholder_text = _("Search Apps");
         search_entry.hexpand = true;
+#if GRANITE5
         search_entry.secondary_icon_tooltip_markup = Granite.markup_accel_tooltip (
             {"<Ctrl>BackSpace"}, _("Clear all")
         );
+#endif
 
         powerstrip = new AppMenu.PowerStrip();
 

@@ -96,7 +96,7 @@ dependencies = [
 wingpanel_indicatorsdir = join_paths(libdir, 'budgie-desktop', 'plugins', 'application-menu')
 
 shared_module(
-    meson.project_name(),
+    'slingshot',
     sources,
     dependencies: dependencies,
     vala_args: [
