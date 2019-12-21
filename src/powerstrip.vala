@@ -47,6 +47,12 @@ class PowerStrip : Gtk.Box
     private Gtk.Button? power_btn = null;
     public signal void invoke_action ();
 
+    private static GLib.Settings settings { get; private set; default = null; }
+
+    static construct {
+        settings = new GLib.Settings ("io.elementary.desktop.wingpanel.applications-menu");
+    }
+
     async void setup_dbus()
     {
         try {
@@ -143,6 +149,10 @@ class PowerStrip : Gtk.Box
                 lock_btn.no_show_all = false;
                 lock_btn.show_all();
             }
+        });
+
+        settings.changed["enable-powerstrip"].connect( () => {
+            set_visible(settings.get_boolean("enable-powerstrip"));
         });
     }
 

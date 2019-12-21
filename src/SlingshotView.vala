@@ -110,7 +110,7 @@ public class Slingshot.SlingshotView : Gtk.Grid {
         container.attach (stack, 0, 1);
 
         // This function must be after creating the page switcher
-        populate_grid_view ();
+        grid_view.populate (app_system);
 
         var event_box = new Gtk.EventBox ();
         event_box.add (container);
@@ -151,7 +151,10 @@ public class Slingshot.SlingshotView : Gtk.Grid {
         search_entry.grab_focus ();
         search_entry.activate.connect (search_entry_activated);
 
-        // FIXME: signals chain up is not supported
+        grid_view.app_launched.connect (() => {
+            close_indicator ();
+        });
+
         search_view.app_launched.connect (() => {
             close_indicator ();
         });
@@ -164,25 +167,23 @@ public class Slingshot.SlingshotView : Gtk.Grid {
         app_system.changed.connect (() => {
             apps = app_system.get_apps ();
 
-            populate_grid_view ();
+            grid_view.populate (app_system);
+
             category_view.setup_sidebar ();
         });
 
         settings.changed["rows"].connect_after(() => {
-            populate_grid_view();
+            grid_view.populate (app_system);
         });
 
         settings.changed["columns"].connect_after(() => {
-            populate_grid_view();
-        });
-
-        settings.changed["enable-powerstrip"].connect( () => {
-            powerstrip.set_visible(settings.get_boolean("enable-powerstrip"));
+            grid_view.populate (app_system);
         });
 
         powerstrip.invoke_action.connect(() => {
             close_indicator ();
         });
+        powerstrip.set_visible(settings.get_boolean("enable-powerstrip"));
     }
 
 #if HAS_PLANK
@@ -451,6 +452,7 @@ public class Slingshot.SlingshotView : Gtk.Grid {
         set_modality ((Modality) view_selector.selected);
         view_selector_revealer.transition_type = Gtk.RevealerTransitionType.SLIDE_RIGHT;
         stack.transition_type = Gtk.StackTransitionType.SLIDE_LEFT_RIGHT;
+        powerstrip.set_visible(settings.get_boolean("enable-powerstrip"));
     }
 
     /*
@@ -545,20 +547,6 @@ public class Slingshot.SlingshotView : Gtk.Grid {
             search_view.set_results (matches, text);
             return false;
         });
-    }
-
-    public void populate_grid_view () {
-        int new_rows = settings.get_int("rows");
-        int new_columns = settings.get_int("columns");
-        grid_view.clear (new_rows, new_columns);
-        foreach (Backend.App app in app_system.get_apps_by_name ()) {
-            var app_button = new Widgets.AppButton (app);
-            app_button.app_launched.connect (() => close_indicator ());
-            grid_view.append (app_button);
-        }
-
-        grid_view.show_all ();
-        powerstrip.set_visible(settings.get_boolean("enable-powerstrip"));
     }
 
     private void normal_move_focus (int delta_column, int delta_row) {
