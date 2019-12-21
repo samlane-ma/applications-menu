@@ -113,7 +113,7 @@ public class Slingshot.Widgets.CategoryView : Gtk.EventBox {
                 var drag_item = (AppListRow) selected_row;
                 drag_uri = "file://" + drag_item.desktop_path;
                 if (drag_uri != null) {
-                    Gtk.drag_set_icon_gicon (ctx, drag_item.app_info.get_icon (), 32, 32);
+                    Gtk.drag_set_icon_gicon (ctx, drag_item.app_info.get_icon (), 16, 16);
                 }
 
                 //view.close_indicator ();

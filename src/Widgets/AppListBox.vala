@@ -49,7 +49,7 @@ public class Slingshot.AppListBox : Gtk.ListBox {
                 var drag_item = (Slingshot.Widgets.SearchItem) selected_row;
                 drag_uri = drag_item.app_uri;
                 if (drag_uri != null) {
-                    Gtk.drag_set_icon_gicon (ctx, drag_item.icon.gicon, 32, 32);
+                    Gtk.drag_set_icon_gicon (ctx, drag_item.icon.gicon, 16, 16);
                 }
 
                 //close_request ();
