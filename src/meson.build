@@ -7,6 +7,8 @@ endif
 
 gresource = join_paths(meson.current_source_dir(), 'plugin.gresource.xml')
 
+wingpanel_indicatorsdir = join_paths(libdir, 'budgie-desktop', 'plugins', 'application-menu')
+
 # Compile the assets into the binary
 applet_appmenu_resources = gnome.compile_resources(
     'appmenuapplet-applet-resources',
@@ -15,6 +17,17 @@ applet_appmenu_resources = gnome.compile_resources(
     c_name: 'budgie_appmenuapplet',
 )
 
+configurationData = configuration_data()
+configurationData.set('PACKAGE_NAME', 'budgie-extras')
+configurationData.set('LOCALE_DIR', LOCALE_DIR)
+configure_file(input: 'config.h.in', output: 'config.h', configuration: configurationData)
+
+custom_target('plugin-appmenu'),
+    input : 'AppMenu.plugin.in',
+    output : 'AppMenu.plugin',
+    command : [intltool, '--desktop-style', podir, '@INPUT@', '@OUTPUT@'],
+    install : true,
+    install_dir : wingpanel_indicatorsdir)
 
 sources = [
     'powerstrip.vala',
@@ -93,8 +106,6 @@ dependencies = [
     peas_dep,
 ]
 
-wingpanel_indicatorsdir = join_paths(libdir, 'budgie-desktop', 'plugins', 'application-menu')
-
 shared_module(
     'slingshot',
     sources,
@@ -103,10 +114,15 @@ shared_module(
         # Make gresource work
         '--target-glib=2.38',
         '--gresources=' + gresource,
+        '--pkg=config',
+        '--vapidir=' + VAPI_DIR,
     ],
-    c_args : '-DGMENU_I_KNOW_THIS_IS_UNSTABLE',
+    c_args : ['-DGMENU_I_KNOW_THIS_IS_UNSTABLE',
+              '-include',
+              'config.h',
+    ],
     install: true,
     install_dir: wingpanel_indicatorsdir
 )
 
-install_data('AppMenu.plugin', install_dir: wingpanel_indicatorsdir)
+#install_data('AppMenu.plugin', install_dir: wingpanel_indicatorsdir)

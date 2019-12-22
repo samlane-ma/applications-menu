@@ -91,11 +91,11 @@ namespace AppMenuApplet {
 
     public class Plugin : Budgie.Plugin, Peas.ExtensionBase {
         public Budgie.Applet get_panel_widget(string uuid) {
-            return new Applet(uuid);
+            return new AppMenuApplet(uuid);
         }
     }
 
-    public class Applet : Budgie.Applet {
+    public class AppMenuApplet : Budgie.Applet {
 
         private Gtk.ToggleButton widget;
         private Budgie.Popover popover = null;
@@ -129,8 +129,17 @@ namespace AppMenuApplet {
             return new AppMenuSettings(this.get_applet_settings(uuid));
         }
 
-        public Applet(string uuid) {
-            //initialiseLocaleLanguageSupport();
+        public AppMenuApplet(string uuid) {
+            // Initialize gettext
+            GLib.Intl.setlocale(GLib.LocaleCategory.ALL, "");
+            GLib.Intl.bindtextdomain(
+                Config.GETTEXT_PACKAGE, Config.PACKAGE_LOCALEDIR
+            );
+            GLib.Intl.bind_textdomain_codeset(
+                Config.GETTEXT_PACKAGE, "UTF-8"
+            );
+            GLib.Intl.textdomain(Config.GETTEXT_PACKAGE);
+
             if (SettingsSchemaSource.get_default ().lookup (KEYBINDING_SCHEMA, true) != null) {
                 keybinding_settings = new GLib.Settings (KEYBINDING_SCHEMA);
             }
@@ -311,18 +320,6 @@ namespace AppMenuApplet {
         {
             this.manager = manager;
             manager.register_popover(widget, popover);
-        }
-
-        public void initialiseLocaleLanguageSupport(){
-            // Initialize gettext
-            /*GLib.Intl.setlocale(GLib.LocaleCategory.ALL, "");
-            GLib.Intl.bindtextdomain(
-                Config.GETTEXT_PACKAGE, Config.PACKAGE_LOCALEDIR
-            );
-            GLib.Intl.bind_textdomain_codeset(
-                Config.GETTEXT_PACKAGE, "UTF-8"
-            );
-            GLib.Intl.textdomain(Config.GETTEXT_PACKAGE);*/
         }
     }
 }
