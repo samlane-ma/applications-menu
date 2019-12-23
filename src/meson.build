@@ -22,7 +22,7 @@ configurationData.set('PACKAGE_NAME', 'budgie-extras')
 configurationData.set('LOCALE_DIR', LOCALE_DIR)
 configure_file(input: 'config.h.in', output: 'config.h', configuration: configurationData)
 
-custom_target('plugin-appmenu'),
+custom_target('plugin-appmenu',
     input : 'AppMenu.plugin.in',
     output : 'AppMenu.plugin',
     command : [intltool, '--desktop-style', podir, '@INPUT@', '@OUTPUT@'],
