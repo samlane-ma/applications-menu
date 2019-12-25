@@ -7,7 +7,7 @@ endif
 
 gresource = join_paths(meson.current_source_dir(), 'plugin.gresource.xml')
 
-wingpanel_indicatorsdir = join_paths(libdir, 'budgie-desktop', 'plugins', 'application-menu')
+wingpanel_indicatorsdir = join_paths(libdir, 'budgie-desktop', 'plugins', 'applications-menu')
 
 # Compile the assets into the binary
 applet_appmenu_resources = gnome.compile_resources(
