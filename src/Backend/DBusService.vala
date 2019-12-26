@@ -43,13 +43,13 @@ public class Slingshot.DBusService : Object {
         Bus.own_name (BusType.SESSION,
                       "io.elementary.desktop.AppLauncherService",
                       BusNameOwnerFlags.NONE,
-                      (conn) => { on_bus_aquired (conn, view); },
+                      (conn) => { on_bus_acquired (conn, view); },
                       name_acquired_handler,
-                      () => { critical ("Could not aquire service name"); });
+                      () => { critical ("Could not acquire service name"); });
 
     }
 
-    private void on_bus_aquired (DBusConnection connection, SlingshotView view) {
+    private void on_bus_acquired (DBusConnection connection, SlingshotView view) {
         try {
             // start service and register it as dbus object
             service = new Service (view);
@@ -61,7 +61,7 @@ public class Slingshot.DBusService : Object {
     }
 
     private void name_acquired_handler (DBusConnection connection, string name) {
-        message ("Service registration suceeded");
+        message ("Service registration succeeded");
         return_if_fail (service != null);
         // Emit initial state
         service.on_view_visibility_change ();
