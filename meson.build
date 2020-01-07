@@ -22,6 +22,12 @@ prefix = get_option('prefix')
 datadir = join_paths(prefix, get_option('datadir'))
 libdir = join_paths(prefix, get_option('libdir'))
 
+LOCALE_DIR = join_paths(prefix, get_option('localedir'))
+intltool = find_program('intltool-merge')
+podir = join_paths(meson.source_root(), 'po')
+VAPI_DIR = join_paths(meson.source_root(),
+                      'vapi')
+
 add_project_arguments(
     '-DPKGDATADIR="@0@"'.format(join_paths(get_option('prefix'), get_option('libdir'), 'wingpanel')),
     language: 'c'
