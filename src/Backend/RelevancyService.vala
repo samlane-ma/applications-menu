@@ -30,7 +30,14 @@ public class Slingshot.Backend.RelevancyService : Object {
 
     public signal void update_complete ();
 
+    bool zeitgeist_installed = false;
+
     public RelevancyService () {
+
+        if (FileUtils.test("/usr/bin/zeitgeist-daemon", FileTest.EXISTS)) {
+            zeitgeist_installed = true;
+        }
+
 
         zg_log = new Zeitgeist.Log ();
         app_popularity = new Gee.HashMap<string, int> ();
@@ -60,7 +67,9 @@ public class Slingshot.Backend.RelevancyService : Object {
                 }
             }
         } catch (Error e) {
-            critical (e.message);
+            if (zeitgeist_installed) {
+                critical (e.message);
+            }
         }
     }
 
@@ -131,7 +140,9 @@ public class Slingshot.Backend.RelevancyService : Object {
             update_complete ();
             refreshing = false;
         } catch (Error err) {
-            critical (err.message);
+            if (zeitgeist_installed) {
+                critical (err.message);
+            }
             refreshing = false;
             return;
         }
@@ -183,7 +194,9 @@ public class Slingshot.Backend.RelevancyService : Object {
         try {
             zg_log.insert_events_no_reply (ptr_arr);
         } catch (Error e) {
-            critical (e.message);
+            if (zeitgeist_installed) {
+                critical (e.message);
+            }
         }
     }
 }
