@@ -22,14 +22,14 @@ public interface ScreenSaver : Object
 /* logind */
 [DBus (name = "org.freedesktop.login1.Manager")]
 public interface LogindInterface : Object {
-    public abstract void suspend(bool interactive) throws IOError;
-    public abstract void hibernate(bool interactive) throws IOError;
+    public abstract void suspend(bool interactive) throws Error;
+    public abstract void hibernate(bool interactive) throws Error;
 }
 
 [DBus (name="org.gnome.SessionManager")]
 public interface SessionManager : Object
 {
-    public abstract async void Logout (uint mode) throws IOError;
+    public abstract async void Logout (uint mode) throws Error;
     public abstract async void Reboot() throws Error;
     public abstract async void Shutdown() throws Error;
 }
@@ -99,7 +99,13 @@ class PowerStrip : Gtk.Box
 
         btn = new Gtk.Button.from_icon_name("system-suspend-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
         btn.clicked.connect(()=> {
-            suspend();
+            try {
+                suspend();
+            }
+            catch (Error e) {
+                warning("suspend: %s", e.message);
+            }
+            
         });
         btn.halign = Gtk.Align.START;
         btn.get_style_context().add_class("flat");
@@ -186,9 +192,9 @@ class PowerStrip : Gtk.Box
         }
 
         Idle.add(()=> {
+            invoke_action();
+            lock_screen();
             try {
-                invoke_action();
-                lock_screen();
                 logind_interface.suspend(false);
             } catch (Error e) {
                 warning("Cannot suspend: %s", e.message);
@@ -199,12 +205,12 @@ class PowerStrip : Gtk.Box
 
     void lock_screen() {
         Idle.add(()=> {
-            try {
+            //try {
                 invoke_action();
-                saver.lock();
-            } catch (Error e) {
-                warning("Cannot lock screen: %s", e.message);
-            }
+                saver.lock.begin();
+            //} catch (Error e) {
+            //    warning("Cannot lock screen: %s", e.message);
+           // }
             return false;
         });
     }
