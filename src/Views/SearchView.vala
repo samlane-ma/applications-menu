@@ -122,7 +122,12 @@ public class Slingshot.Widgets.SearchView : Gtk.ScrolledWindow {
         }
 
         var search_item = new SearchItem (app, search_term, result_type);
-        app.start_search.connect ((search, target) => start_search (search, target));
+        Type type = app.get_type();
+        uint signalid;
+        Quark detail;
+        bool out = Signal.parse_name("start-search", type, out signalid, out detail, true);
+        if (out && signalid != 0)
+            app.start_search.connect ((search, target) => start_search (search, target));
 
         list_box.add (search_item);
         search_item.show_all ();
