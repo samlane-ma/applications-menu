@@ -19,7 +19,7 @@
 
 public class Slingshot.Backend.App : Object {
     public signal void launched (App app);
-    public signal void start_search (Synapse.SearchMatch search_match, Synapse.Match? target);
+    //public signal void start_search (Synapse.SearchMatch search_match, Synapse.Match? target); UB apparently unnecessary
 
     public enum AppType {
         APP,
@@ -116,7 +116,7 @@ public class Slingshot.Backend.App : Object {
                     break;
                 case AppType.SYNAPSE:
                     if (match.match_type == Synapse.MatchType.SEARCH) {
-                        start_search (match as Synapse.SearchMatch, target);
+                        //start_search (match as Synapse.SearchMatch, target); UB apparently unnecessary
                         return false;
                     } else {
                         if (target == null)

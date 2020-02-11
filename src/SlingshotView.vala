@@ -132,9 +132,9 @@ public class Slingshot.SlingshotView : Gtk.Grid {
             set_modality (Modality.NORMAL_VIEW);
         }
 
-        search_view.start_search.connect ((match, target) => {
+        /*search_view.start_search.connect ((match, target) => {
             search.begin (search_entry.text, match, target);
-        });
+        }); UB apparently unneccessary*/
 
         focus_in_event.connect (() => {
             search_entry.grab_focus ();
