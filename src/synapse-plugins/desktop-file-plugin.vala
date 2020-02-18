@@ -183,6 +183,9 @@ namespace Synapse {
                 string id = dfm.desktop_id.replace ("application://", "");
                 var desktop_app_info = new DesktopAppInfo (id);
 
+                if (desktop_app_info == null)
+                    continue; // UB LP:#1863794
+
                 MatchInfo info;
 
                 // Populate actions
