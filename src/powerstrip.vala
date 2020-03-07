@@ -138,6 +138,7 @@ class PowerStrip : Gtk.Box
                 if (session == null) {
                     return;
                 }
+                invoke_action();
                 session.Logout.begin(0);
             } catch (Error e) {
                 message("Error invoking end session dialog: %s", e.message);
