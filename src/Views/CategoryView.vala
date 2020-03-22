@@ -197,12 +197,26 @@ public class Slingshot.Widgets.CategoryView : Gtk.EventBox {
         category_switcher.selected = old_selected;
     }
 
+    private static int sort_apps_by_name (Backend.App a, Backend.App b) {
+        return a.name.collate (b.name);
+    }
+
     public void show_filtered_apps (string category) {
         foreach (unowned Gtk.Widget child in listbox.get_children ()) {
             child.destroy ();
         }
 
+        var sorted_apps = new SList<Backend.App> ();
+        string[] sorted_apps_execs = {};
+
         foreach (Backend.App app in view.apps[category]) {
+            if (!(app.exec in sorted_apps_execs)) {
+                sorted_apps.insert_sorted_with_data (app, sort_apps_by_name);
+                sorted_apps_execs += app.exec;
+            }
+        }
+
+        foreach (Backend.App app in sorted_apps) {
             listbox.add (new AppListRow (app.desktop_id, app.desktop_path));
         }
 
