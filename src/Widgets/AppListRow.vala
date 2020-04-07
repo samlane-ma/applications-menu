@@ -60,7 +60,32 @@ public class AppListRow : Gtk.ListBoxRow {
 
     public void launch () {
         try {
-            app_info.launch (null, null);
+            //app_info.launch (null, null);
+            /*
+            appinfo.launch has difficulty running pkexec
+            based apps so lets spawn an async process instead
+            */
+            var commandline =  app_info.get_commandline();
+            string[] spawn_args = {};
+            const string checkstr = "pkexec";
+            if (commandline.contains(checkstr)) {
+                spawn_args = commandline.split(" ");
+            }
+            if (spawn_args.length >= 2 && spawn_args[0] == checkstr) {
+                string[] spawn_env = Environ.get();
+                Pid child_pid;
+                Process.spawn_async("/",
+                    spawn_args,
+                    spawn_env,
+                    SpawnFlags.SEARCH_PATH | SpawnFlags.DO_NOT_REAP_CHILD,
+                    null, out child_pid);
+                ChildWatch.add(child_pid, (pid, status) => {
+                    Process.close_pid(pid);
+                });
+            }
+            else {
+                app_info.launch(null, null);
+            }
         } catch (Error error) {
             critical (error.message);
         }

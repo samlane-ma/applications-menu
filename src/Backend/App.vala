@@ -111,7 +111,33 @@ public class Slingshot.Backend.App : Object {
                     break;
                 case AppType.APP:
                     launched (this); // Emit launched signal
-                    new DesktopAppInfo (desktop_id).launch (null, null);
+                    var info = new DesktopAppInfo (desktop_id);
+                    //new DesktopAppInfo (desktop_id).launch (null, null);
+                    /*
+                    appinfo.launch has difficulty running pkexec
+                    based apps so lets spawn an async process instead
+                    */
+                    var commandline =  info.get_commandline();
+                    string[] spawn_args = {};
+                    const string checkstr = "pkexec";
+                    if (commandline.contains(checkstr)) {
+                        spawn_args = commandline.split(" ");
+                    }
+                    if (spawn_args.length >= 2 && spawn_args[0] == checkstr) {
+                        string[] spawn_env = Environ.get();
+                        Pid child_pid;
+                        Process.spawn_async("/",
+                            spawn_args,
+                            spawn_env,
+                            SpawnFlags.SEARCH_PATH | SpawnFlags.DO_NOT_REAP_CHILD,
+                            null, out child_pid);
+                        ChildWatch.add(child_pid, (pid, status) => {
+                            Process.close_pid(pid);
+                        });
+                    }
+                    else {
+                        info.launch(null, null);
+                    }
                     debug (@"Launching application: $name");
                     break;
                 case AppType.SYNAPSE:
