@@ -33,6 +33,12 @@ add_project_arguments(
     language: 'c'
 )
 
+pluginsdir = join_paths(prefix, get_option('libdir'), 'io.elementary.application-menu')
+add_project_arguments(
+    '-DPLUGINSDIR="@0@"'.format(pluginsdir),
+    language: 'c'
+)
+
 glib_dep = dependency('glib-2.0')
 gee_dep = dependency('gee-0.8')
 gio_dep = dependency('gio-2.0')
@@ -50,6 +56,7 @@ zeitgeist_dep = dependency('zeitgeist-2.0')
 #switchboard_dep = dependency('switchboard-2.0')
 libgnome_menu_dep = dependency('libgnome-menu-3.0')
 #wingpanel_dep = dependency('wingpanel-2.0', version: '>=2.1.0')
+posix_dep = meson.get_compiler('vala').find_library('posix')
 budgie_dep = dependency('budgie-1.0')
 peas_dep = dependency('libpeas-gtk-1.0')
 

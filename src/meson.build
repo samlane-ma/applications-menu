@@ -81,6 +81,7 @@ sources = [
     'synapse-core/utils.vala',
     zeitgeist_backend_source,
 
+    'synapse-plugins/worker-link.vala',
     'synapse-plugins/calculator-plugin.vala',
     'synapse-plugins/command-plugin.vala',
     'synapse-plugins/desktop-file-plugin.vala',
@@ -104,6 +105,7 @@ dependencies = [
     plank_dep,
     budgie_dep,
     peas_dep,
+    posix_dep
 ]
 
 shared_module(
