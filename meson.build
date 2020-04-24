@@ -1,7 +1,7 @@
 project(
   'slingshot',
   'vala', 'c',
-  version : '2.5.0'
+  version : '2.6.0'
 )
 
 i18n = import('i18n')
@@ -33,7 +33,7 @@ add_project_arguments(
     language: 'c'
 )
 
-pluginsdir = join_paths(prefix, get_option('libdir'), 'io.elementary.application-menu')
+pluginsdir = join_paths(prefix, get_option('libdir'), 'io.elementary.wingpanel.applications-menu')
 add_project_arguments(
     '-DPLUGINSDIR="@0@"'.format(pluginsdir),
     language: 'c'
@@ -55,6 +55,7 @@ json_glib_dep = dependency('json-glib-1.0')
 zeitgeist_dep = dependency('zeitgeist-2.0')
 #switchboard_dep = dependency('switchboard-2.0')
 libgnome_menu_dep = dependency('libgnome-menu-3.0')
+libhandy_dep = dependency('libhandy-0.0')
 #wingpanel_dep = dependency('wingpanel-2.0', version: '>=2.1.0')
 posix_dep = meson.get_compiler('vala').find_library('posix')
 budgie_dep = dependency('budgie-1.0')

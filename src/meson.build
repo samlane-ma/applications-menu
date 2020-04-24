@@ -35,7 +35,6 @@ sources = [
     'IconChooser.vala',
     applet_appmenu_resources,
     'SlingshotView.vala',
-    'Pixels.vala',
 
     'Backend/AppSystem.vala',
     'Backend/DBusService.vala',
@@ -53,7 +52,6 @@ sources = [
     'Widgets/AppListRow.vala',
     'Widgets/Switcher.vala',
     'Widgets/SearchItem.vala',
-    'Widgets/Sidebar.vala',
     'Widgets/PageChecker.vala',
 
     'synapse-core/Actions/TerminalRunnerAction.vala',
@@ -105,7 +103,15 @@ dependencies = [
     plank_dep,
     budgie_dep,
     peas_dep,
-    posix_dep
+    libhandy_dep,
+    posix_dep,
+]
+
+#wingpanel_indicatorsdir = wingpanel_dep.get_pkgconfig_variable('indicatorsdir', define_variable: ['libdir', libdir])
+
+c_args = [
+    '-DGMENU_I_KNOW_THIS_IS_UNSTABLE',
+    '-DHANDY_USE_UNSTABLE_API',
 ]
 
 shared_module(
@@ -119,10 +125,7 @@ shared_module(
         '--pkg=config',
         '--vapidir=' + VAPI_DIR,
     ],
-    c_args : ['-DGMENU_I_KNOW_THIS_IS_UNSTABLE',
-              '-include',
-              'config.h',
-    ],
+    c_args : c_args,
     install: true,
     install_dir: wingpanel_indicatorsdir
 )
