@@ -50,7 +50,7 @@ class PowerStrip : Gtk.Box
     private static GLib.Settings settings { get; private set; default = null; }
 
     static construct {
-        settings = new GLib.Settings ("io.elementary.desktop.wingpanel.applications-menu");
+        settings = new GLib.Settings ("org.ubuntubudgie.plugins.budgie-appmenu");
     }
 
     async void setup_dbus()

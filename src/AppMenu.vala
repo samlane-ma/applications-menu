@@ -58,7 +58,7 @@ namespace AppMenuApplet {
         private static GLib.Settings appmenu_settings { get; private set; default = null; }
 
         static construct {
-            appmenu_settings = new GLib.Settings ("io.elementary.desktop.wingpanel.applications-menu");
+            appmenu_settings = new GLib.Settings ("org.ubuntubudgie.plugins.budgie-appmenu");
         }
 
         public AppMenuSettings(GLib.Settings? settings)
