@@ -42,6 +42,8 @@ public class Slingshot.SlingshotView : Gtk.Grid {
     private Gtk.Revealer view_selector_revealer;
     private Modality modality;
     private Widgets.Grid grid_view;
+    private Gtk.Grid container;
+    private Gtk.Grid top;
     private Widgets.SearchView search_view;
     private Widgets.CategoryView category_view;
 
@@ -88,7 +90,7 @@ public class Slingshot.SlingshotView : Gtk.Grid {
 
         powerstrip = new AppMenu.PowerStrip();
 
-        var top = new Gtk.Grid ();
+        top = new Gtk.Grid ();
         top.margin_start = 12;
         top.margin_end = 12;
         top.add (view_selector_revealer);
@@ -107,11 +109,11 @@ public class Slingshot.SlingshotView : Gtk.Grid {
         stack.add_named (category_view, "category");
         stack.add_named (search_view, "search");
 
-        var container = new Gtk.Grid ();
+        container = new Gtk.Grid ();
         container.row_spacing = 12;
-        container.margin_top = 12;
-        container.attach (top, 0, 0);
-        container.attach (stack, 0, 1);
+        container.margin_bottom = 12;
+        container.attach (top, 0, 1);
+        container.attach (stack, 0, 0);
 
         // This function must be after creating the page switcher
         grid_view.populate (app_system);
@@ -188,6 +190,30 @@ public class Slingshot.SlingshotView : Gtk.Grid {
             close_indicator ();
         });
         powerstrip.set_visible(appmenu_settings.get_boolean("enable-powerstrip"));
+    }
+
+    public void panel_position_changed(Budgie.PanelPosition position) {
+        if (position == Budgie.PanelPosition.BOTTOM) {
+            container.margin_bottom = 12;
+            container.margin_top = 0;
+
+            container.remove_row(1);
+            container.remove_row(0);
+
+            container.attach (top, 0, 1);
+            container.attach (stack, 0, 0);
+        }
+        else {
+            container.margin_bottom = 0;
+            container.margin_top = 12;
+
+            container.remove_row(1);
+            container.remove_row(0);
+
+            container.attach (top, 0, 0);
+            container.attach (stack, 0, 1);
+        }
+        container.show_all();
     }
 
 #if HAS_PLANK

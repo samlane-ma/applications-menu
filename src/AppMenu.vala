@@ -195,7 +195,7 @@ namespace AppMenuApplet {
             /* Popover */
             popover = new Budgie.Popover(widget);
             indicator_grid = new Gtk.Grid ();
-            indicator_grid.attach (view, 0, 1, 1, 1);
+            indicator_grid.attach (view, 0, 0, 1, 1);
             popover.add(indicator_grid);
             update_tooltip ();
             if (keybinding_settings != null) {
@@ -252,6 +252,8 @@ namespace AppMenuApplet {
             int margin = vertical ? 0 : 3;
             img.set_margin_end(margin);
             on_settings_changed("enable-menu-label");
+
+            view.panel_position_changed(position);
         }
 
         protected void on_settings_changed(string key) {
