@@ -59,6 +59,7 @@ namespace Synapse {
 
         public bool is_hidden { get; private set; default = false; }
         public bool is_valid { get; private set; default = true; }
+        public bool is_control_panel { get; private set; default = false; }
 
         public string[] mime_types = null;
 
@@ -163,6 +164,11 @@ namespace Synapse {
                 }
                 if (keyfile.has_key (GROUP, "NoDisplay") && keyfile.get_boolean (GROUP, "NoDisplay")) {
                     is_hidden = true;
+                }
+
+                if ("gnome-control-center" in exec) {
+                    is_hidden = true; // hide all gnome-control-center items
+                    is_control_panel=true;
                 }
 
                 comment = app_info.get_description () ?? "";

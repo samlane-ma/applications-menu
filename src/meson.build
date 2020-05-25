@@ -84,6 +84,7 @@ sources = [
     'synapse-plugins/command-plugin.vala',
     'synapse-plugins/desktop-file-plugin.vala',
     'synapse-plugins/link-plugin.vala',
+    'synapse-plugins/control-panel-plugin.vala',
     asresources
 ]
 

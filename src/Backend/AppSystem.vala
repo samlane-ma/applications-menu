@@ -106,6 +106,9 @@ public class Slingshot.Backend.AppSystem : Object {
                     break;
                 case GMenu.TreeItemType.ENTRY:
                     var app = new App (iter.get_entry ());
+                    if ("gnome-control-center" in app.exec) {
+                        continue; // lets ignore all gnome-control-center items
+                    }
 #if HAVE_ZEITGEIST
                     app.launched.connect (rl_service.app_launched);
 #endif
