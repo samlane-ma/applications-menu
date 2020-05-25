@@ -25,6 +25,8 @@ public class Slingshot.Widgets.CategoryView : Gtk.EventBox {
     private string? drag_uri = null;
     private NavListBox category_switcher;
     private NavListBox listbox;
+    private bool rollover_menus=false;
+    private static GLib.Settings settings=null;
 
     private const Gtk.TargetEntry DND = { "text/uri-list", 0, 0 };
 
@@ -150,6 +152,10 @@ public class Slingshot.Widgets.CategoryView : Gtk.EventBox {
         });
 
         setup_sidebar ();
+        settings = new GLib.Settings ("org.ubuntubudgie.plugins.budgie-appmenu");
+        settings.changed["rollover-menu"].connect_after(() => {
+            rollover_menus = settings.get_boolean("rollover-menu");
+        });
     }
 
     private static int category_sort_func (CategoryRow row1, CategoryRow row2) {
@@ -195,10 +201,30 @@ public class Slingshot.Widgets.CategoryView : Gtk.EventBox {
         }
     }
 
+    /**
+     * Permits "rolling" over categories
+     */
+    private bool on_mouse_enter(Gtk.Widget source_widget, Gdk.EventCrossing e)
+    {
+        if (!this.rollover_menus) {
+            return Gdk.EVENT_PROPAGATE;
+        }
+        /* If it's not valid, don't use it. */
+        Gtk.EventBox? b = source_widget as Gtk.EventBox;
+        if (b==null) {
+            return Gdk.EVENT_PROPAGATE;
+        }
+
+        /* Activate the source_widget category */
+        category_switcher.select_row(b.get_parent() as CategoryRow);
+        return Gdk.EVENT_PROPAGATE;
+    }
+
     public void setup_sidebar () {
         CategoryRow? old_selected = (CategoryRow) category_switcher.get_selected_row ();
         foreach (unowned Gtk.Widget child in category_switcher.get_children ()) {
             child.destroy ();
+            SignalHandler.disconnect_by_func(child, (void*)on_mouse_enter, this);
         }
 
         // Fill the sidebar
@@ -209,6 +235,7 @@ public class Slingshot.Widgets.CategoryView : Gtk.EventBox {
             }
 
             var row = new CategoryRow (cat_name);
+            row.eventbox.enter_notify_event.connect(this.on_mouse_enter);
             category_switcher.add (row);
             if (old_selected != null && old_selected.cat_name == cat_name) {
                 new_selected = row;
@@ -285,6 +312,7 @@ public class Slingshot.Widgets.CategoryView : Gtk.EventBox {
 
     private class CategoryRow : Gtk.ListBoxRow {
         public string cat_name { get; construct; }
+        public Gtk.EventBox eventbox;
 
         public CategoryRow (string cat_name) {
             Object (cat_name: cat_name);
@@ -294,8 +322,10 @@ public class Slingshot.Widgets.CategoryView : Gtk.EventBox {
             var label = new Gtk.Label (GLib.dgettext ("gnome-menus-3.0", cat_name));
             label.halign = Gtk.Align.START;
             label.margin_start = 3;
-
-            add (label);
+            eventbox = new Gtk.EventBox();
+            eventbox.add(label);
+            eventbox.add_events(Gdk.EventMask.ENTER_NOTIFY_MASK | Gdk.EventMask.LEAVE_NOTIFY_MASK);
+            add (eventbox);
         }
     }
 

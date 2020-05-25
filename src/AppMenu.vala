@@ -53,6 +53,8 @@ namespace AppMenuApplet {
         [GtkChild]
         private Gtk.Switch? switch_powerstrip;
 
+        [GtkChild]
+        private Gtk.Switch? switch_rollover;
 
         private GLib.Settings? settings;
         private static GLib.Settings appmenu_settings { get; private set; default = null; }
@@ -70,6 +72,7 @@ namespace AppMenuApplet {
             appmenu_settings.bind("columns", spin_columns, "value", SettingsBindFlags.DEFAULT);
             appmenu_settings.bind("rows", spin_rows, "value", SettingsBindFlags.DEFAULT);
             appmenu_settings.bind("enable-powerstrip", switch_powerstrip, "active", SettingsBindFlags.DEFAULT);
+            appmenu_settings.bind("rollover-menu", switch_rollover, "active", SettingsBindFlags.DEFAULT);
 
             this.button_icon_pick.clicked.connect(on_pick_click);
         }

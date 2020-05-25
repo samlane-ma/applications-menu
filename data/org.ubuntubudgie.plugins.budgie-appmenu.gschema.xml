@@ -14,5 +14,9 @@
             <default>false</default>
             <summary>Show Power-strip</summary>
         </key>
+        <key name="rollover-menu" type="b">
+            <default>false</default>
+            <summary>Allow category view rollover menu</summary>
+        </key>
 	</schema>
 </schemalist>
