@@ -45,11 +45,10 @@ namespace Synapse {
         public abstract async bool can_stop () throws GLib.Error;
     }
 
-    [DBus (name = "org.freedesktop.ScreenSaver")]
+    [DBus (name = "org.gnome.ScreenSaver")]
     public interface LockObject : Object {
-        public const string UNIQUE_NAME = "org.freedesktop.ScreenSaver";
-        public const string OBJECT_PATH = "/org/freedesktop/ScreenSaver";
-
+        public const string UNIQUE_NAME = "org.gnome.ScreenSaver";
+        public const string OBJECT_PATH = "/org/gnome/ScreenSaver";
         public abstract void lock () throws GLib.Error;
         public abstract bool get_active () throws GLib.Error;
     }
@@ -134,7 +133,10 @@ namespace Synapse {
             }
 
             public override void do_action () {
-                do_lock.begin ();
+                Idle.add(()=> {
+                    do_lock.begin ();
+                    return false;
+                });
             }
         }
 
