@@ -1,7 +1,7 @@
 project(
   'slingshot',
   'vala', 'c',
-  version : '2.7.0'
+  version : '2.7.1'
 )
 
 i18n = import('i18n')
@@ -52,7 +52,6 @@ libsoup_dep = dependency('libsoup-2.4')
 appstream_dep = dependency('appstream')
 gio_unix_dep = dependency('gio-unix-2.0')
 json_glib_dep = dependency('json-glib-1.0')
-zeitgeist_dep = dependency('zeitgeist-2.0')
 #switchboard_dep = dependency('switchboard-2.0')
 libgnome_menu_dep = dependency('libgnome-menu-3.0')
 libhandy_dep = dependency('libhandy-0.0')
@@ -60,13 +59,6 @@ libhandy_dep = dependency('libhandy-0.0')
 posix_dep = meson.get_compiler('vala').find_library('posix')
 budgie_dep = dependency('budgie-1.0')
 peas_dep = dependency('libpeas-gtk-1.0')
-
-unity_dep = []
-
-if get_option('with-unity')
-    unity_dep = dependency('unity', version: '>=4.0.0')
-    add_project_arguments('--define=HAVE_UNITY', language: 'vala')
-endif
 
 plank_dep = dependency('plank', required: false)
 if plank_dep.version().version_compare('>=0.10.9')
