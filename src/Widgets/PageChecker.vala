@@ -22,13 +22,21 @@
 public class Slingshot.Widgets.PageChecker : Gtk.Button {
     public const double MIN_OPACITY = 0.4;
 
+#if HANDY1
+    public unowned Hdy.Carousel paginator { get; construct; }
+#else
     public unowned Hdy.Paginator paginator { get; construct; }
+#endif
     public unowned Gtk.Widget page { get; construct; }
 
     private static Gtk.CssProvider provider;
     private int page_number;
 
+#if HANDY1
+    public PageChecker (Hdy.Carousel paginator, Gtk.Widget page) {
+#else
     public PageChecker (Hdy.Paginator paginator, Gtk.Widget page) {
+#endif
         Object (
             paginator: paginator,
             page: page

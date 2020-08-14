@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: slingshot\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-29 20:49+0000\n"
-"PO-Revision-Date: 2020-05-28 18:38+0000\n"
+"POT-Creation-Date: 2020-07-14 15:50+0000\n"
+"PO-Revision-Date: 2020-06-07 20:11+0000\n"
 "Last-Translator: p-bo <pavel.borecki@gmail.com>\n"
 "Language-Team: Czech <https://l10n.elementary.io/projects/wingpanel/"
 "applications-menu/cs/>\n"
@@ -20,19 +20,11 @@ msgstr ""
 "X-Generator: Weblate 3.9.1\n"
 "X-Launchpad-Export-Date: 2017-04-05 05:23+0000\n"
 
-#: src/Indicator.vala:35
-msgid "Slingshot"
-msgstr "Slingshot"
-
-#: src/Indicator.vala:36
-msgid "The app-menu indicator"
-msgstr "Indikátor s nabídkou s aplikacemi"
-
-#: src/Indicator.vala:75 src/Widgets/SearchItem.vala:38
+#: src/Indicator.vala:73 src/Widgets/SearchItem.vala:38
 msgid "Applications"
 msgstr "Aplikace"
 
-#: src/Indicator.vala:118
+#: src/Indicator.vala:116
 msgid "Open and search apps"
 msgstr "Otevřít a hledat aplikace"
 
@@ -67,11 +59,11 @@ msgstr "Žádné výsledky pro „%s“"
 
 #: src/Widgets/AppContextMenu.vala:78
 msgid "Remove from _Dock"
-msgstr "Odebrat z lišty"
+msgstr "Odebrat z _Doku"
 
 #: src/Widgets/AppContextMenu.vala:80
 msgid "Add to _Dock"
-msgstr "Přidat na lištu"
+msgstr "Přidat na Dok"
 
 #: src/Widgets/AppContextMenu.vala:143
 msgid "Uninstall"
@@ -119,7 +111,7 @@ msgstr "Ostatní"
 
 #: src/synapse-core/Actions/ClipboardCopyAction.vala:25
 msgid "Copy to Clipboard"
-msgstr "Kopírovat do schránky"
+msgstr "Zkopírovat do schránky"
 
 #: src/synapse-core/Actions/ClipboardCopyAction.vala:26
 msgid "Copy selection to clipboard"
@@ -131,7 +123,7 @@ msgstr "Spustit"
 
 #: src/synapse-core/Actions/RunnerAction.vala:26
 msgid "Run an application, action or script"
-msgstr "Spustit aplikaci, činnost nebo skript"
+msgstr "Spustit aplikaci, akci nebo skript"
 
 #: src/synapse-core/Actions/TerminalRunnerAction.vala:25
 msgid "Run in Terminal"
@@ -154,7 +146,7 @@ msgstr "Hledat v centru aplikací"
 
 #: src/synapse-plugins/appcenter-plugin.vala:88
 msgid "AppCenter"
-msgstr "Centrum aplikací"
+msgstr "Centru aplikací"
 
 #: src/synapse-plugins/appcenter-plugin.vala:89
 msgid "Search for applications"
@@ -232,7 +224,7 @@ msgstr "Otevřít %s nastavení"
 
 #: src/synapse-plugins/switchboard-plugin.vala:70
 msgid "Find switchboard plugs and open them."
-msgstr "Modul ovládacích panelů a otevřít je."
+msgstr "Najít modul ovládacích panelů a otevřít ho."
 
 #: src/synapse-plugins/system-managment.vala:110
 msgid "Lock"
@@ -329,6 +321,12 @@ msgstr ""
 #: src/synapse-plugins/system-managment.vala:512
 msgid "ConsoleKit wasn't found"
 msgstr "ConsoleKit nenalezeno"
+
+#~ msgid "Slingshot"
+#~ msgstr "Slingshot"
+
+#~ msgid "The app-menu indicator"
+#~ msgstr "Indikátor s nabídkou s aplikacemi"
 
 #, fuzzy
 #~ msgid "Uninstall “%s”?"
