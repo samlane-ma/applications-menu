@@ -61,7 +61,7 @@ public class Slingshot.DBusService : Object {
     }
 
     private void name_acquired_handler (DBusConnection connection, string name) {
-        message ("Service registration succeeded");
+        debug ("Service registration succeeded");
         return_if_fail (service != null);
         // Emit initial state
         service.on_view_visibility_change ();

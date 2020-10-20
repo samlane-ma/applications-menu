@@ -53,6 +53,7 @@ public class Slingshot.Widgets.CategoryView : Gtk.EventBox {
         listbox = new NavListBox ();
         listbox.expand = true;
         listbox.selection_mode = Gtk.SelectionMode.BROWSE;
+        listbox.set_filter_func ((Gtk.ListBoxFilterFunc) filter_function);
 
         var listbox_scrolled = new Gtk.ScrolledWindow (null, null);
         listbox_scrolled.hscrollbar_policy = Gtk.PolicyType.NEVER;
@@ -66,8 +67,8 @@ public class Slingshot.Widgets.CategoryView : Gtk.EventBox {
 
         add (container);
 
-        category_switcher.row_selected.connect ((row) => {
-            show_filtered_apps (((CategoryRow) row).cat_name);
+        category_switcher.row_selected.connect (() => {
+            listbox.invalidate_filter ();
         });
 
         category_switcher.search_focus_request.connect (() => {
@@ -224,6 +225,11 @@ public class Slingshot.Widgets.CategoryView : Gtk.EventBox {
             SignalHandler.disconnect_by_func(child, (void*)on_mouse_enter, this);
         }
 
+        foreach (unowned Backend.App app in view.app_system.get_apps_by_name ()) {
+            listbox.add (new AppListRow (app.desktop_id, app.desktop_path));
+        }
+        listbox.show_all ();
+
         // Fill the sidebar
         unowned Gtk.ListBoxRow? new_selected = null;
         foreach (string cat_name in view.app_system.apps.keys) {
@@ -243,30 +249,18 @@ public class Slingshot.Widgets.CategoryView : Gtk.EventBox {
         category_switcher.select_row (new_selected ?? category_switcher.get_row_at_index (0));
     }
 
-    private static int sort_apps_by_name (Backend.App a, Backend.App b) {
-        return a.name.collate (b.name);
-    }
-
-    public void show_filtered_apps (string category) {
-        foreach (unowned Gtk.Widget child in listbox.get_children ()) {
-            child.destroy ();
-        }
-
-        var sorted_apps = new SList<Backend.App> ();
-        string[] sorted_apps_execs = {};
-
-        foreach (Backend.App app in view.app_system.apps[category]) {
-            if (!(app.exec in sorted_apps_execs)) {
-                sorted_apps.insert_sorted_with_data (app, sort_apps_by_name);
-                sorted_apps_execs += app.exec;
+    [CCode (instance_pos = -1)]
+    private bool filter_function (AppListRow row) {
+        unowned CategoryRow category_row = (CategoryRow) category_switcher.get_selected_row ();
+        if (category_row != null) {
+            foreach (Backend.App app in view.app_system.apps[category_row.cat_name]) {
+                if (row.app_id == app.desktop_id) {
+                    return true;
+                }
             }
         }
 
-        foreach (Backend.App app in sorted_apps) {
-            listbox.add (new AppListRow (app.desktop_id, app.desktop_path));
-        }
-
-        listbox.show_all ();
+        return false;
     }
 
     private bool on_key_press (Gdk.EventKey event) {

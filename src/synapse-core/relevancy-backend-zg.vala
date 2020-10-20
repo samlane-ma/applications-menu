@@ -53,7 +53,7 @@ namespace Synapse {
                     }
                 });
             } catch (Error err) {
-                warning ("Unable to check Zeitgeist data sources: %s", err.message);
+                debug ("Unable to check Zeitgeist data sources: %s", err.message);
             }
         }
 
@@ -110,7 +110,7 @@ namespace Synapse {
                     index++;
                 }
             } catch (Error err) {
-                warning ("%s", err.message);
+                debug ("%s", err.message);
                 return;
             }
         }
@@ -194,7 +194,7 @@ namespace Synapse {
                     index++;
                 }
             } catch (Error err) {
-                warning ("%s", err.message);
+                debug ("%s", err.message);
             }
 
             uri_popularity = popularity_map;
