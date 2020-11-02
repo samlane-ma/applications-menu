@@ -20,6 +20,8 @@ public class Slingshot.Widgets.AppButton : Gtk.Button {
     public signal void app_launched ();
 
     public Backend.App app { get; construct; }
+    public int label_width { get; construct; }
+    public int grid_icon_size { get; construct; }
 
 #if HAS_PLANK
     private static Plank.DBusClient plank_client;
@@ -31,8 +33,8 @@ public class Slingshot.Widgets.AppButton : Gtk.Button {
     private Gtk.Label badge;
     private bool dragging = false; //prevent launching
 
-    public AppButton (Backend.App app) {
-        Object (app: app);
+    public AppButton (Backend.App app, int grid_icon_size, int label_width) {
+        Object (app: app, grid_icon_size: grid_icon_size, label_width: label_width);
     }
 
     static construct {
@@ -55,13 +57,13 @@ public class Slingshot.Widgets.AppButton : Gtk.Button {
         app_label.halign = Gtk.Align.CENTER;
         app_label.justify = Gtk.Justification.CENTER;
         app_label.lines = 2;
-        app_label.max_width_chars = 16;
-        app_label.width_chars = 16;
+        app_label.max_width_chars = label_width;
+        app_label.width_chars = label_width;
         app_label.wrap_mode = Pango.WrapMode.WORD_CHAR;
         app_label.set_ellipsize (Pango.EllipsizeMode.END);
 
-        var image = new Granite.AsyncImage.from_gicon_async (app.icon, ICON_SIZE);
-        image.pixel_size = ICON_SIZE;
+        var image = new Granite.AsyncImage.from_gicon_async (app.icon, grid_icon_size);
+        image.pixel_size = grid_icon_size;
         image.margin_top = 9;
         image.margin_end = 6;
         image.margin_start = 6;
@@ -131,7 +133,7 @@ public class Slingshot.Widgets.AppButton : Gtk.Button {
         update_badge_count ();
 #endif
 
-        app.notify["icon"].connect (() => image.set_from_gicon_async.begin (app.icon, ICON_SIZE));
+        app.notify["icon"].connect (() => image.set_from_gicon_async.begin (app.icon, grid_icon_size));
     }
 
     public void launch_app () {

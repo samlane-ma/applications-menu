@@ -51,6 +51,9 @@ namespace AppMenuApplet {
         private Gtk.SpinButton spin_columns;
 
         [GtkChild]
+        private Gtk.SpinButton? grid_icon_size;
+
+        [GtkChild]
         private Gtk.Switch? switch_powerstrip;
 
         [GtkChild]
@@ -73,6 +76,7 @@ namespace AppMenuApplet {
             appmenu_settings.bind("rows", spin_rows, "value", SettingsBindFlags.DEFAULT);
             appmenu_settings.bind("enable-powerstrip", switch_powerstrip, "active", SettingsBindFlags.DEFAULT);
             appmenu_settings.bind("rollover-menu", switch_rollover, "active", SettingsBindFlags.DEFAULT);
+            appmenu_settings.bind("grid-iconsize",grid_icon_size,"value",SettingsBindFlags.DEFAULT);
 
             this.button_icon_pick.clicked.connect(on_pick_click);
         }

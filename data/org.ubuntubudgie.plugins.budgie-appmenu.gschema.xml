@@ -18,5 +18,9 @@
             <default>false</default>
             <summary>Allow category view rollover menu</summary>
         </key>
+        <key name="grid-iconsize" type="i">
+            <default>64</default>
+            <summary>Set Icon Size</summary>
+        </key>
 	</schema>
 </schemalist>

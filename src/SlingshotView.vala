@@ -186,6 +186,10 @@ public class Slingshot.SlingshotView : Gtk.Grid {
             grid_view.populate (app_system);
         });
 
+        appmenu_settings.changed["grid-iconsize"].connect_after(() => {
+            grid_view.populate (app_system);
+        });
+
         powerstrip.invoke_action.connect(() => {
             close_indicator ();
         });
