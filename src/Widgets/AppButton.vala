@@ -45,9 +45,9 @@ public class Slingshot.Widgets.AppButton : Gtk.Button {
     }
 
     construct {
-        Gtk.TargetEntry dnd = {"text/uri-list", 0, 0};
-        Gtk.drag_source_set (this, Gdk.ModifierType.BUTTON1_MASK, {dnd},
-                             Gdk.DragAction.COPY);
+//      Gtk.TargetEntry dnd = {"text/uri-list", 0, 0};
+//      Gtk.drag_source_set (this, Gdk.ModifierType.BUTTON1_MASK, {dnd},
+//                           Gdk.DragAction.COPY);
 
         tooltip_text = app.description;
 
@@ -110,7 +110,7 @@ public class Slingshot.Widgets.AppButton : Gtk.Button {
 
             return Gdk.EVENT_PROPAGATE;
         });
-
+/*
         this.drag_begin.connect ((ctx) => {
             this.dragging = true;
             Gtk.drag_set_icon_gicon (ctx, app.icon, 16, 16);
@@ -125,7 +125,7 @@ public class Slingshot.Widgets.AppButton : Gtk.Button {
         this.drag_data_get.connect ( (ctx, sel, info, time) => {
             sel.set_uris ({File.new_for_path (app.desktop_path).get_uri ()});
         });
-
+*/
 #if HAS_PLANK
         app.notify["current-count"].connect (update_badge_count);
         app.notify["count-visible"].connect (update_badge_visibility);

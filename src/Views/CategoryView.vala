@@ -105,7 +105,7 @@ public class Slingshot.Widgets.CategoryView : Gtk.EventBox {
         listbox.key_press_event.connect (on_key_press);
         category_switcher.key_press_event.connect (on_key_press);
 
-        Gtk.drag_source_set (listbox, Gdk.ModifierType.BUTTON1_MASK, {DND}, Gdk.DragAction.COPY);
+//      Gtk.drag_source_set (listbox, Gdk.ModifierType.BUTTON1_MASK, {DND}, Gdk.DragAction.COPY);
 
         listbox.motion_notify_event.connect ((event) => {
             if (!dragging) {
@@ -115,6 +115,7 @@ public class Slingshot.Widgets.CategoryView : Gtk.EventBox {
             return Gdk.EVENT_PROPAGATE;
         });
 
+/*
         listbox.drag_begin.connect ((ctx) => {
             unowned Gtk.ListBoxRow? selected_row = listbox.get_selected_row ();
             if (selected_row != null) {
@@ -144,7 +145,7 @@ public class Slingshot.Widgets.CategoryView : Gtk.EventBox {
                 sel.set_uris ({drag_uri});
             }
         });
-
+*/
         listbox.search_focus_request.connect (() => {
             search_focus_request ();
         });

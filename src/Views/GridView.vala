@@ -91,18 +91,6 @@ public class Slingshot.Widgets.Grid : Gtk.Grid {
         create_new_grid ();
         paginator.scroll_to (current_grid);
 
-        /* get the icon size - make sure the icon size is not manually set to
-           an unstable size 
-        */
-        icon_size = appmenu_settings.get_int("grid-iconsize");
-        if (icon_size < 32 || icon_size > 128) {
-            icon_size = 64;
-            appmenu_settings.set_int("grid-iconsize", icon_size);
-        }
-
-        /* Adjust the text width when up or down when the icon size changes to
-           keep a consistent grid spacing
-        */
         text_width = icon_size / 8 + 8;
 
         foreach (Backend.App app in app_system.get_apps_by_name ()) {
@@ -138,7 +126,13 @@ public class Slingshot.Widgets.Grid : Gtk.Grid {
         current_grid.margin_start = 12;
         current_grid.margin_end = 12;
 
-        current_grid.row_spacing = 24;
+        icon_size = appmenu_settings.get_int("grid-iconsize");
+        if (icon_size < 32 || icon_size > 128) {
+            icon_size = 64;
+            appmenu_settings.set_int("grid-iconsize", icon_size);
+        }
+
+        current_grid.row_spacing = (icon_size < 50 ? 6 : 24);
         current_grid.column_spacing = 0;
         grids.set (page.number, current_grid);
         paginator.add (current_grid);
